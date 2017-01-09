@@ -1,0 +1,95 @@
+{% extends "layout.jinja" %}
+{% import 'macros.jinja' as m %}
+
+{% block head %}
+  <style>
+    .live {
+      background-color: #eee;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class='row'>
+    <div class='col-md-12'>
+      <p>
+        <h1>Hello!</h1>
+        As usual there is an <a href='https://info-beamer.com'>info-beamer</a>
+        installation at #33c3 that shows information to all visitors on screens or
+        in the halls. This year you can easily add your own images and videos.
+        Just log into this website with your github account and upload your
+        content. Promote you project, your hackerspace or your party.
+      </p>
+      <div class='text-center'>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <div class='alert alert-success' style='font-size: 200%;'>
+          Thanks for all contributions. No new submissions will be processed.
+          See you next year!
+          <br/><br/>
+          The source for this site, the pong game and all the visualizations running on the screens will
+          be released early next year. Follow <a href='https://twitter.com/infobeamer'>@infobeamer</a> for updates.
+        </div>
+        <!--
+        <a class='btn btn-lg btn-success' href='<%url_for('login')%>'>
+          Login/Signup with Github
+        </a><br/>
+        (no new github accounts, minimum 5 followers)
+        -->
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+      </div>
+    </div>
+    {% if live %}
+      <div class='col-md-12 live'>
+        <h2>On the screens at the moment</h2>
+        <div class='row'>
+          <div class='col-md-12'>
+            <div class='alert alert-warning'>
+              You submitted an image/video but it doesn't appear here? 
+              Make sure you set start/end time.
+            </div>
+          </div>
+          {% for asset, user in live %}
+            <div class='col-md-6'>
+              <div class="thumbnail" style='min-height: 340px;'>
+                <%m.embed(asset)%>
+              </div>
+              <div class="caption">
+                <% "video" if asset.asset_type == asset.TYPE_VIDEO else "image" %>/<%asset.id%> by <a href='https://github.com/<%user.username%>'><% user.username %></a>
+              </div>
+              <br/>
+              <br/>
+            </div>
+            {% if loop.index0 % 2 == 1 and not loop.last %}
+              </div>
+              <div class='row'>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+    <div class='col-md-12'>
+      <h2>Feedback/Contact/Complaints</h2>
+      <p>
+        This is the 33c3 project of <a href='https://dividuum.de/'>Florian Wesch</a>.
+        I don't endorse any of the images or
+        videos submitted by users just because the appear on the screen. The user that
+        submitted the content is fully responsible for their content. But you're
+        smart, so you probably already knew that. :-)
+      </p>
+      <p>
+        Write me an email at <a href='mailto:fw@dividuum.de?subject=33c3 self service feedback'>fw@dividuum.de</a>
+        if you have any questions or feedback. I'm probably also somewhere at the Congress, so
+        feel free to talk to me about info-beamer, the Raspberry Pi (these control all the screens!) or
+        Lua. Or Python. Or whatever :-)
+      </p>
+    </div>
+  </div>
+{% endblock %}

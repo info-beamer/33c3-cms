@@ -1,0 +1,5 @@
+#!/bin/sh
+export PYTHON_EGG_CACHE=/tmp/egg
+export VERSION=$(date +%s)
+export SETTINGS=settings.cfg
+exec env/bin/gunicorn -u ib -g ib main:app -b 127.0.0.1:10000 -w 5 --max-requests 100 2>&1

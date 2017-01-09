@@ -1,0 +1,13 @@
+{% macro embed(asset) %}
+  {% if asset.asset_type == asset.TYPE_VIDEO %}
+    <div class='embed-responsive embed-responsive-16by9'>
+      <video class="embed-responsive-item" width="1920" height="240" controls autoplay loop muted>
+        <source src='<%url_for('static', filename='asset-%s-%s.mp4' % (asset.id, asset.secret))%>' type="video/mp4">
+      </video>
+    </div>
+  {% else %}
+    <a href='<%url_for('static', filename='asset-%s-%s.jpg' % (asset.id, asset.secret))%>'>
+      <img class='img-responsive' src='<%url_for('static', filename='asset-%s-%s.jpg' % (asset.id, asset.secret))%>'>
+    </a>
+  {% endif %}
+{% endmacro %}

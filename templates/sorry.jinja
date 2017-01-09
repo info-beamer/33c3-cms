@@ -1,0 +1,22 @@
+{% extends "layout.jinja" %}
+
+{% block body %}
+  <div class='row'>
+    <div class='col-md-6 col-md-offset-3'>
+      <br/><br/><br/><br/><br/>
+      <div class="alert alert-danger" role="alert">
+        Sorry, no account will be created:
+        {% if reason == 'new' %}
+          Your github account is too new (less than a month old).
+        {% elif reason == 'followers' %}
+          Your github account has too few followers (5 minimum).
+        {% else %}
+          Just because.
+        {% endif %}
+        Just find a trusted friend with a proper github
+        account and ask them to add the content for you.
+      </div>
+     </div>
+    </div>
+  </div>
+{% endblock %}

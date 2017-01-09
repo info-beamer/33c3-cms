@@ -1,0 +1,159 @@
+{% extends "layout.jinja" %}
+
+{% block head %}
+  <%-super()-%>
+  <style>
+    .unset {
+      -webkit-animation: pusate 1s infinite alternate;
+      -moz-animation: pusate 1s infinite alternate;
+      -animation: pusate 1s infinite alternate;
+    }
+    @-webkit-keyframes pusate {
+      from { box-shadow: 0 0 0; }
+      to { box-shadow: 0 0 30px #FC0; }
+    }
+    @-moz-keyframes pusate {
+      from { box-shadow: 0 0 0; }
+      to { box-shadow: 0 0 30px #FC0; }
+    }
+    @keyframes pusate {
+      from { box-shadow: 0 0 0; }
+      to { box-shadow: 0 0 30px #FC0; }
+    }
+  </style>
+  <script>
+    var username = <%username|tojson%>;
+    var earliest = <%earliest|tojson%>;
+    var latest = <%latest|tojson%>;
+    var interval = <%interval|tojson%>;
+    var csrf = <%csrf()|tojson%>;
+  </script>
+{% endblock %}
+
+{% block templates %}
+  <script type="text/x-template" id="time-select">
+    <select @change="onUpdate">
+      <option v-for="option in options" :selected="option.selected" v-bind:value="option.value">
+        {{ option.text }}
+      </option>
+    </select>
+  </script>
+
+  <script type="text/x-template" id="asset-item">
+    <div class="col-sm-6 col-md-4">
+      <div class="thumbnail">
+        <a v-bind:href="asset.full">
+          <img class='img-responsive' v-bind:src="asset.thumb"/>
+        </a>
+        <div class="caption">
+          <h3>
+            {{type}} {{asset.id}}
+          </h3>
+          <p>
+            When to show this?<br/>
+            <time-select 
+              v-bind:class='{unset: asset.starts == 0}'
+              v-bind:timestamp='asset.starts'
+              v-on:timeSelected='onUpdateStart'
+              v-bind:from='start_from'
+              v-bind:to='end_to'>
+            </time-select>
+            &nbsp;-&nbsp;
+            <time-select 
+              v-bind:class='{unset: asset.ends == 0}'
+              v-bind:timestamp='asset.ends'
+              v-on:timeSelected='onUpdateEnd'
+              v-bind:from='end_from'
+              v-bind:to='end_to'>
+            </time-select>
+            <p>
+              Moderation: {{moderation}}<br/>
+              <span v-if="asset.status == 1">Status: {{play_info}}</span><br/>
+            </p>
+          </p>
+          <p>
+            <button class='btn btn-danger' v-on:click="onDelete">Delete</button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/x-template" id="asset-list">
+    <div>
+      <div class='row'>
+        <asset-item v-for="asset in assets" v-bind:asset="asset"></asset-item>
+        <div class='col-md-12' v-if="assets.length == 0">No content uploaded. You should add some :-)</div>
+      </div>
+      <!-- 
+      <button class='btn btn-default' v-on:click="onRefresh">Refresh</button>
+      -->
+    </div>
+  </script>
+
+  <script type="text/x-template" id="asset-uploader">
+    <div>
+      <p>
+        <strong>What to upload?</strong>
+        <br/>
+        Please only upload content that is interesting for
+        the 33c3 visitors. Promote your project, a key
+        signing or a real party. Memes and other garbage
+        will be rejected.
+      </p>
+      <p>
+        Chose a sensible time period for your content. Better
+        targeted content will be given more screen time.
+      </p>
+      <p>
+        Upload only H264/MP4 videos (<b>max 10 seconds!</b>)
+        or JPG images. Maximum size is FullHD (1920x1080).
+        It is recommended that you upload 16:9 content as
+        that is how it will be used on the screens.
+      </p>
+      <p>
+        Content will be moderated by multiple people. It
+        might take a moment.
+      </p>
+      <p>
+        Please submit something actionable and with a
+        single purpose (like one project, one key
+        signing party, etc).
+      </p>
+      <label v-if="!has_file" class="btn btn-default btn-file">
+        Select JPEG/MP4<input type="file" accept=".mp4,.jpg,.jpeg" style="display: none;" @change="onFileSelected"></input>
+      </label>
+      <button v-if="has_file" class='btn btn-success' v-on:click="onUpload">Upload {{filename}}</button>
+      <button v-if="has_file" class='btn btn-default' v-on:click="onAbort">Abort</button>
+    </div>
+  </script>
+{% endblock %}
+
+{% block navbar %}
+  <li class='navbar-text'>Signed in as github.com/<b>{{username}}</b></a></li>
+  <li>
+    <a href='<%url_for('logout')%>'>
+      Logout
+    </a>
+  </li>
+{% endblock %}
+
+{% block body %}
+  <div class="row">
+    <div class='col-md-9'>
+      <h2>Your content</h2>
+      <asset-list></asset-list>
+    </div>
+    <div class='col-md-3'>
+      <h2>Upload</h2>
+      <asset-uploader></asset-uploader>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="/static/vue.js"></script>
+  <script src="/static/vuex.js"></script>
+  <script src="/static/axios.min.js"></script>
+  <script src='/static/app.js?_=<%version%>'></script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{
+    "name": "self-service",
+    "options": [{
+        "title": "Font",
+        "ui_width": 4,
+        "name": "font",
+        "type": "font",
+        "doc_link": true,
+        "default": "default-font.ttf"
+    }, {
+        "title": "Info Size",
+        "ui_width": 4,
+        "name": "size",
+        "type": "integer",
+        "default": 128
+    }, {
+        "title": "Call",
+        "ui_width": 4,
+        "name": "call",
+        "type": "string",
+        "default": "Show your own content" 
+    }],
+    "deferred": [
+        "files.json"
+    ]
+}

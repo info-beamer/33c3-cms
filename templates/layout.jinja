@@ -1,0 +1,44 @@
+<html lang="en">
+  <head>
+    <link rel='stylesheet' href='/static/bootstrap.min.css'>
+    <link rel='stylesheet' href='/static/bootstrap-theme.min.css'>
+    <link rel="shortcut icon" href="/static/favicon.png" type="image/png"/>
+    <meta content="noarchive,nofollow,noindex" name="robots" />
+    <title>33C3 screen self-service</title>
+    {% block head %}
+    {% endblock %}
+  </head>
+  <body>
+    {% block templates %}
+    {% endblock %}
+
+    <div class="container" id='app'>
+      <br/>
+      <nav class="navbar navbar-default navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a href='/' class="navbar-brand">
+              33c3 screen self-service
+            </a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            {% block navbar %}
+              <li>
+                <a href='https://info-beamer.com'>
+                  <img src='https://cdn.infobeamer.com/s/img/logo.png' width=20 height=20>
+                  powered by info-beamer.com
+                </a>
+              </li>
+            {% endblock %}
+          </ul>
+        </div>
+      </nav>
+
+      {% block body %}
+      {% endblock %}
+    </div>
+
+    {% block scripts %}
+    {% endblock %}
+  </body>
+</html>

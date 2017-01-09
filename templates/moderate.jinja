@@ -1,0 +1,18 @@
+{% extends "layout.jinja" %}
+{% import 'macros.jinja' as m %}
+
+{% block body %}
+  <div class="row">
+    <div class='col-md-9'>
+      <h2>Content</h2>
+      <%m.embed(asset)%>
+    </div>
+    <div class='col-md-3'>
+      <h2>Moderate</h2>
+      <a class='btn btn-success btn-block' href='<%url_for('moderate_set', asset_id=asset.id, status=asset.MODERATE_OK)%>'>Ok</a>
+      <br/>
+      <br/>
+      <a class='btn btn-danger btn-block' href='<%url_for('moderate_set', asset_id=asset.id, status=asset.MODERATE_NOPE)%>'>Nope</a>
+    </div>
+  </div>
+{% endblock %}
